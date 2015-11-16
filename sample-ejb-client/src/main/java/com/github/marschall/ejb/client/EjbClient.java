@@ -2,23 +2,17 @@ package com.github.marschall.ejb.client;
 
 
 import java.lang.annotation.Annotation;
-import java.security.Security;
 import java.util.Hashtable;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.jboss.sasl.JBossSaslProvider;
-
 import com.github.marschall.ejb.tenant.api.AnnotatedClass;
 import com.github.marschall.ejb.tenant.api.CustomAnnotation;
 import com.github.marschall.ejb.tenant.api.ServiceInterface;
 
 public class EjbClient {
-  static {
-    Security.addProvider(new JBossSaslProvider());
-  }
 
   public void run() {
     Context context = createInitialContext();
@@ -98,12 +92,9 @@ public class EjbClient {
     return jndiProperties;
   }
 
-  Hashtable<Object, Object> createConfigurationHashTable() {
-    // https://issues.jboss.org/browse/EJBCLIENT-34
-    Hashtable<Object, Object> jndiProperties = new Hashtable<>();
-
-    jndiProperties.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
-    jndiProperties.put(Context.PROVIDER_URL,"remote://localhost:4447");
+  Hashtable<String, String> createConfigurationHashTable() {
+    Hashtable<String, String> jndiProperties = new Hashtable<>();
+    jndiProperties.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
 
     return jndiProperties;
   }
