@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>com.github.marschall</groupId>
+    <artifactId>ejb-sample</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>sample-application</artifactId>
+  <packaging>ear</packaging>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>tenant</artifactId>
+      <version>${project.version}</version>
+      <type>ejb</type>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-ear-plugin</artifactId>
+        <configuration>
+          <version>6</version>
+          <!-- override the application name, the application name is part 
+            of the JNDI name if we leave this out the version name would end up being 
+            part of the application name -->
+          <applicationName>sample-application</applicationName>
+          <defaultLibBundleDir>lib/</defaultLibBundleDir>
+          <!-- Since the JAR file name is part of the JNDI name we remove 
+            the version for the EJBs. All the JARs in the lib/ folder keep the version. -->
+          <fileNameMapping>no-version-for-ejb</fileNameMapping>
+          <archive>
+            <index>true</index>
+          </archive>
+        </configuration>
+      </plugin>
+      <!-- <plugin> <groupId>com.github.marschall</groupId> <artifactId>3rdpartyjandex-maven-plugin</artifactId> 
+        <version>1.0.0-SNAPSHOT</version> <executions> <execution> <phase>prepare-package</phase> 
+        <goals> <goal>index</goal> </goals> </execution> </executions> </plugin> -->
+    </plugins>
+  </build>
+
+</project>
